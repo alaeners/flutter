@@ -21,7 +21,9 @@ class _MyAppState extends State<MyApp> {
 
   TextEditingController porcentagemController = TextEditingController();
   String porcentagem = '0';
-  num pagamento = 0;
+  num pagamentoFinalDividido = 0;
+  num pagamentoTotal = 0;
+  num pagamentoTotalGarcom = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +107,18 @@ class _MyAppState extends State<MyApp> {
                 )),
             Container(
               margin: const EdgeInsets.all(20),
-              child: Text('BRL ' + pagamento.toString()),
+              child: Text('Valor de [cada um] _em BRL: ' +
+                  pagamentoFinalDividido.toString()),
+            ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: Text('Valor do [garçom] _em BRL: ' +
+                  pagamentoTotalGarcom.toString()),
+            ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              child:
+                  Text('Valor [total] _em BRL: ' + pagamentoTotal.toString()),
             )
           ]))),
     );
@@ -125,7 +138,9 @@ class _MyAppState extends State<MyApp> {
     num percentage = (num.parse(porcentagem) / 100);
     num newValue = num.parse(valorTotal) + (num.parse(valorTotal) * percentage);
     setState(() {
-      pagamento = (newValue / num.parse(numPessoas));
+      pagamentoFinalDividido = (newValue / num.parse(numPessoas));
+      pagamentoTotalGarcom = num.parse(valorTotal) * percentage;
+      pagamentoTotal = num.parse(valorTotal) + pagamentoTotalGarcom;
     });
   }
 }
