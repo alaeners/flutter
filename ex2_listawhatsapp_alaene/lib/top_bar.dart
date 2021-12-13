@@ -10,77 +10,77 @@ class TopBar extends StatefulWidget {
 class TopBarState extends State<TopBar> {
   var listaContatos = [
     {
-      'image': NetworkImage("https://loremflickr.com/320/320"),
+      'image': const NetworkImage("https://loremflickr.com/320/320"),
       'name': "Alaene",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/321"),
+      'image': const NetworkImage("https://loremflickr.com/320/321"),
       'name': "Tonny - My cat",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/322"),
+      'image': const NetworkImage("https://loremflickr.com/320/322"),
       'name': "Pedro - my boy",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/323"),
+      'image': const NetworkImage("https://loremflickr.com/320/323"),
       'name': "Aleatorio 1",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/324"),
+      'image': const NetworkImage("https://loremflickr.com/320/324"),
       'name': "Aleatorio 11",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/325"),
+      'image': const NetworkImage("https://loremflickr.com/320/325"),
       'name': "Aleatorio 111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/326"),
+      'image': const NetworkImage("https://loremflickr.com/320/326"),
       'name': "Aleatorio 1111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/327"),
+      'image': const NetworkImage("https://loremflickr.com/320/327"),
       'name': "Aleatorio 11111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/328"),
+      'image': const NetworkImage("https://loremflickr.com/320/328"),
       'name': "Aleatorio 11111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/329"),
+      'image': const NetworkImage("https://loremflickr.com/320/329"),
       'name': "Aleatorio 111111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/330"),
+      'image': const NetworkImage("https://loremflickr.com/320/330"),
       'name': "Alaene",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/331"),
+      'image': const NetworkImage("https://loremflickr.com/320/331"),
       'name': "Aleatorio 1111111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/332"),
+      'image': const NetworkImage("https://loremflickr.com/320/332"),
       'name': "Aleatorio 1111111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/333"),
+      'image': const NetworkImage("https://loremflickr.com/320/333"),
       'name': "Aleatorio 1111111",
       'tel': "+ 55 31 9 94767115"
     },
     {
-      'image': NetworkImage("https://loremflickr.com/320/334"),
+      'image': const NetworkImage("https://loremflickr.com/320/334"),
       'name': "Aleatorio 1111111",
       'tel': "+ 55 31 9 94767115"
     },
@@ -128,7 +128,7 @@ class TopBarState extends State<TopBar> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 160,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const <Widget>[
                             Text(
