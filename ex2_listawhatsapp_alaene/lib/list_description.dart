@@ -12,10 +12,14 @@ class _DescriptionContact extends State<DescriptionContact> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Center(
+      appBar: AppBar(
+          title: Text(widget.title),
+          backgroundColor: Colors.green.shade700,
+          elevation: 0,
+          centerTitle: true),
+      body: const Center(
         child: Text(
-          'This is a new screen',
+          ' OBJETIVO AQUI: Ao clicar no contato ele deve ir para uma outra página que exiba no appBar o nome do contato. ',
           style: TextStyle(fontSize: 24.0),
         ),
       ),
