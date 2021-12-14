@@ -112,7 +112,7 @@ class TopBarState extends State<TopBar> {
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 240,
             child: ListView.builder(
-                itemCount: 15,
+                itemCount: listaContatos.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
