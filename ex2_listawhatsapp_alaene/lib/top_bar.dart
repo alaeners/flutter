@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'list_description.dart';
 
 class TopBar extends StatefulWidget {
   const TopBar({Key? key}) : super(key: key);
@@ -7,24 +8,9 @@ class TopBar extends StatefulWidget {
   TopBarState createState() => TopBarState();
 }
 
-class NewScreen extends StatelessWidget {
-  const NewScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('New Screen')),
-      body: Center(
-        child: Text(
-          'This is a new screen',
-          style: TextStyle(fontSize: 24.0),
-        ),
-      ),
-    );
-  }
-}
-
 class TopBarState extends State<TopBar> {
+  late final String title;
+
   var listaContatos = [
     {
       'url': "https://loremflickr.com/320/320",
@@ -103,9 +89,11 @@ class TopBarState extends State<TopBar> {
     },
   ];
 
-  void _navigateToNextScreen(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => NewScreen()));
+  void _navigateToNextScreen(BuildContext context, String title) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const DescriptionContact(
+              title: "Passa aqui o titulo, mas como?",
+            )));
   }
 
   @override
@@ -138,7 +126,8 @@ class TopBarState extends State<TopBar> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                       onTap: () {
-                        _navigateToNextScreen(context);
+                        _navigateToNextScreen(
+                            context, listaContatos[index]['name'].toString());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
