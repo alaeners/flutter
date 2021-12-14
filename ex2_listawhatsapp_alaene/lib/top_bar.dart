@@ -7,6 +7,23 @@ class TopBar extends StatefulWidget {
   TopBarState createState() => TopBarState();
 }
 
+class NewScreen extends StatelessWidget {
+  const NewScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('New Screen')),
+      body: Center(
+        child: Text(
+          'This is a new screen',
+          style: TextStyle(fontSize: 24.0),
+        ),
+      ),
+    );
+  }
+}
+
 class TopBarState extends State<TopBar> {
   var listaContatos = [
     {
@@ -86,6 +103,11 @@ class TopBarState extends State<TopBar> {
     },
   ];
 
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => NewScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -114,41 +136,45 @@ class TopBarState extends State<TopBar> {
             child: ListView.builder(
                 itemCount: listaContatos.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.lightGreen,
-                              backgroundImage: NetworkImage(
-                                  listaContatos[index]['url'].toString()))),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 160,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              listaContatos[index]['name'].toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                  return GestureDetector(
+                      onTap: () {
+                        _navigateToNextScreen(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.lightGreen,
+                                  backgroundImage: NetworkImage(
+                                      listaContatos[index]['url'].toString()))),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 160,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  listaContatos[index]['name'].toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  listaContatos[index]['tel'].toString(),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              listaContatos[index]['tel'].toString(),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
+                          ),
+                        ],
+                      ));
                 }),
           ),
         ),
