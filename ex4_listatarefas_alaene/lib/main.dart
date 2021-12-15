@@ -63,10 +63,38 @@ class _HomeState extends State<Home> {
   }
 
   void _incrementTask() {
+    insertText();
     setState(() {
-      _salvar("asdjaskldjaksljdkasjdkasjdklasjkdjaskld");
+      _salvar("Salvando Tudo, mas salva");
       _listarTasks();
     });
+  }
+
+  void insertText() {
+    showAlertDialog(BuildContext context) {
+      // set up the button
+      Widget okButton = TextButton(
+        child: Text("OK"),
+        onPressed: () {},
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("My title"),
+        content: Text("This is my message."),
+        actions: [
+          okButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
   }
 
   @override
@@ -78,16 +106,19 @@ class _HomeState extends State<Home> {
       body: ListView.builder(
         itemCount: showTasks.length,
         itemBuilder: (context, index) {
+          _listarTasks();
           return CheckboxListTile(
             title: Text(showTasks[index]['descricao'].toString()),
-            secondary: Icon(Icons.alarm),
+            secondary: Icon(Icons.delete),
             controlAffinity: ListTileControlAffinity.leading,
             value: checkboxStatus,
             onChanged: (bool? newStatus) {
               checkboxStatus = newStatus as bool;
               _atualizarTask(
                   showTasks[index]['id'] as int, newStatus ? "T" : "F");
-              _excluirTask(showTasks[index]['id'] as int);
+              if (newStatus) {
+                _excluirTask(showTasks[index]['id'] as int);
+              }
               _listarTasks();
             },
           );
