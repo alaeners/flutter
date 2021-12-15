@@ -62,8 +62,8 @@ class _HomeState extends State<Home> {
   }
 
   void _incrementTask() {
-    insertText();
     setState(() {
+      insertText();
       _salvar("Salvando Tudo, mas salva");
       _listarTasks();
     });
@@ -73,17 +73,17 @@ class _HomeState extends State<Home> {
     showAlertDialog(BuildContext context) {
       // set up the button
       Widget okButton = TextButton(
-        child: Text("OK"),
+        child: Text("SALVAR"),
         onPressed: () {},
       );
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
-        title: Text("My title"),
-        content: Text("This is my message."),
-        actions: [
-          okButton,
-        ],
+        title: Text("Lista de Tarefas"),
+        content: TextField(
+          decoration: InputDecoration(hintText: "Escreva aqui sua tarefa"),
+        ),
+        actions: [_salvar("Salvando por aqui")],
       );
 
       // show the dialog
@@ -111,6 +111,7 @@ class _HomeState extends State<Home> {
             secondary: Icon(Icons.delete),
             controlAffinity: ListTileControlAffinity.leading,
             value: checkboxStatus,
+            selectedTileColor: Colors.amberAccent,
             onChanged: (bool? newStatus) {
               checkboxStatus = newStatus as bool;
               _atualizarTask(
@@ -118,7 +119,6 @@ class _HomeState extends State<Home> {
               if (newStatus) {
                 _excluirTask(showTasks[index]['id'] as int);
               }
-              _listarTasks();
             },
           );
         },
