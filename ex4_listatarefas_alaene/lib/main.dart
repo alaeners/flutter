@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
     var bd = await openDatabase(localBancoDados, version: 1,
         onCreate: (db, dbVersaoRecente) {
       String sql =
-          "CREATE TABLE tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, descricao VARCHAR, status BIT) ";
+          "CREATE TABLE tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, descricao VARCHAR, status VARCHAR) ";
       db.execute(sql);
     });
 
@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
 
   _salvar(String descricao) async {
     Database bd = await _openConection();
-    Map<String, dynamic> task = {"descricao": descricao, "status": false};
+    Map<String, dynamic> task = {"descricao": descricao, "status": "F"};
     int id = await bd.insert("tasks", task);
   }
 
@@ -43,6 +43,7 @@ class _HomeState extends State<Home> {
     String sql = "SELECT * FROM tasks "; //ASC, DESC
     List tasks = await bd.rawQuery(sql);
 
+    showTasks.clear();
     for (var task in tasks) {
       showTasks.add(task);
     }
@@ -53,15 +54,15 @@ class _HomeState extends State<Home> {
     int retorno = await bd.delete("tasks", where: "id = ?", whereArgs: [id]);
   }
 
-  _atualizarTask(int id, bool status) async {
+  _atualizarTask(int id, String status) async {
     Database bd = await _openConection();
 
-    Map<String, bool> dadosTask = {"status": status};
-    int retorno = await bd
-        .update("tasks", dadosTask, where: "id = ?", whereArgs: [id]);
+    Map<String, String> dadosTask = {"status": status};
+    int retorno =
+        await bd.update("tasks", dadosTask, where: "id = ?", whereArgs: [id]);
   }
 
-    void _incrementTask() {
+  void _incrementTask() {
     setState(() {
       _salvar("asdjaskldjaksljdkasjdkasjdklasjkdjaskld");
       _listarTasks();
@@ -84,15 +85,18 @@ class _HomeState extends State<Home> {
             value: checkboxStatus,
             onChanged: (bool? newStatus) {
               checkboxStatus = newStatus as bool;
+              _atualizarTask(
+                  showTasks[index]['id'] as int, newStatus ? "T" : "F");
+              _excluirTask(showTasks[index]['id'] as int);
+              _listarTasks();
             },
           );
         },
-    ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementTask,
-          tooltip: 'Increment task',
-          child: const Icon(Icons.add),
-          
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementTask,
+        tooltip: 'Increment task',
+        child: const Icon(Icons.add),
       ),
     );
   }
