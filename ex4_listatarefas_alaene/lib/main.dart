@@ -61,11 +61,12 @@ class _HomeState extends State<Home> {
         await bd.update("tasks", dadosTask, where: "id = ?", whereArgs: [id]);
   }
 
-  void _incrementTask() {
+  _incrementTask(BuildContext context) {
     setState(() {
-      insertText();
-      _salvar("Salvando Tudo, mas salva");
-      _listarTasks();
+      _showMaterialDialog(context);
+      //insertText();
+      //_salvar("Salvando Tudo, mas salva");
+      //_listarTasks();
     });
   }
 
@@ -96,6 +97,31 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _showMaterialDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Material Dialog'),
+            content: Text('Hey! I am Coflutter!'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close')),
+              TextButton(
+                onPressed: () {
+                  print('HelloWorld!');
+                  Navigator.pop(context);
+                },
+                child: Text('HelloWorld!'),
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,8 +150,8 @@ class _HomeState extends State<Home> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementTask,
-        tooltip: 'Increment task',
+        onPressed: _incrementTask(context),
+        tooltip: 'Crie sua nova tarefa aqui',
         child: const Icon(Icons.add),
       ),
     );
