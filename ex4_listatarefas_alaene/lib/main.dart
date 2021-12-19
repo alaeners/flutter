@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -16,6 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var showTasks = [];
   var listCheckBox = [];
+  var verifyCheckBox = false;
 
   late TextEditingController myControllerDialog;
 
@@ -60,13 +63,16 @@ class _HomeState extends State<Home> {
     for (var task in tasks) {
       listCheckBox.add(CheckboxListTile(
         title: Text(task['descricao'].toString()),
-        secondary: Icon(Icons.delete),
+        secondary: Icon(Icons.access_alarm),
         controlAffinity: ListTileControlAffinity.leading,
         value: task["status"] == "T",
         selectedTileColor: Colors.amberAccent,
         onChanged: (bool? newStatus) {
-          _excluirTask(task['id'] as int);
-          //_atualizarTask(task['id'] as int, newStatus as bool ? "T" : "F");
+          if (task["status"] == "T") {
+            _excluirTask(task['id'] as int);
+          } else {
+            _atualizarTask(task['id'] as int, newStatus as bool ? "T" : "F");
+          }
           _listarTasks().then((dynamic f) {
             setState(() {});
           });
@@ -115,6 +121,15 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Lista de Tarefas")),
+        bottom: PreferredSize(
+            child: Text(
+              "Dicas: \n1. Clique para atualizar o check \n2. Se desejar excluir clique novamente na tarefa marcada.",
+              style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white),
+            ),
+            preferredSize: const Size.fromHeight(48.0)),
       ),
       body: ListView.builder(
         itemCount: listCheckBox.length,
