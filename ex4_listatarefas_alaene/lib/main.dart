@@ -17,6 +17,27 @@ class _HomeState extends State<Home> {
   var checkboxStatus = false;
   var showTasks = [];
 
+  createAlertDialog(BuildContext context) {
+    TextEditingController myDialogController = TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Insira sua nova tarefa aqui"),
+            content: TextField(
+              controller: myDialogController,
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                elevation: 5.0,
+                child: Text("Salvar"),
+                onPressed: (_salvar(myDialogController.text)),
+              )
+            ],
+          );
+        });
+  }
+
   _openConection() async {
     final caminhoBancoDados = await getDatabasesPath();
     final localBancoDados = join(caminhoBancoDados, "banco.db");
@@ -61,65 +82,11 @@ class _HomeState extends State<Home> {
         await bd.update("tasks", dadosTask, where: "id = ?", whereArgs: [id]);
   }
 
-  _incrementTask(BuildContext context) {
+  _incrementTask() {
     setState(() {
-      _showMaterialDialog(context);
-      //insertText();
-      //_salvar("Salvando Tudo, mas salva");
+      _salvar("Salvando Tudo, mas salva pelo increment");
       //_listarTasks();
     });
-  }
-
-  void insertText() {
-    showAlertDialog(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("SALVAR"),
-        onPressed: () {},
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: Text("Lista de Tarefas"),
-        content: TextField(
-          decoration: InputDecoration(hintText: "Escreva aqui sua tarefa"),
-        ),
-        actions: [_salvar("Salvando por aqui")],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-  }
-
-  void _showMaterialDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Material Dialog'),
-            content: Text('Hey! I am Coflutter!'),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Close')),
-              TextButton(
-                onPressed: () {
-                  print('HelloWorld!');
-                  Navigator.pop(context);
-                },
-                child: Text('HelloWorld!'),
-              )
-            ],
-          );
-        });
   }
 
   @override
@@ -134,7 +101,7 @@ class _HomeState extends State<Home> {
           _listarTasks();
           return CheckboxListTile(
             title: Text(showTasks[index]['descricao'].toString()),
-            secondary: Icon(Icons.delete),
+            secondary: Icon(Icons.time_to_leave),
             controlAffinity: ListTileControlAffinity.leading,
             value: checkboxStatus,
             selectedTileColor: Colors.amberAccent,
@@ -150,7 +117,7 @@ class _HomeState extends State<Home> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementTask(context),
+        onPressed: createAlertDialog(context),
         tooltip: 'Crie sua nova tarefa aqui',
         child: const Icon(Icons.add),
       ),
