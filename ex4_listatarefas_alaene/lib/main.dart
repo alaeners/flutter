@@ -14,28 +14,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var checkboxStatus = false;
   var showTasks = [];
+  var listCheckBox = [];
 
-  createAlertDialog(BuildContext context) {
-    TextEditingController myDialogController = TextEditingController();
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Insira sua nova tarefa aqui"),
-            content: TextField(
-              controller: myDialogController,
-            ),
-            actions: <Widget>[
-              MaterialButton(
-                elevation: 5.0,
-                child: Text("Salvar"),
-                onPressed: (_salvar(myDialogController.text)),
-              )
-            ],
-          );
-        });
+  late TextEditingController myControllerDialog;
+
+  @override
+  void initState() {
+    super.initState();
+    myControllerDialog = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    myControllerDialog.dispose();
+    super.dispose();
   }
 
   _openConection() async {
@@ -63,9 +56,22 @@ class _HomeState extends State<Home> {
     String sql = "SELECT * FROM tasks "; //ASC, DESC
     List tasks = await bd.rawQuery(sql);
 
-    showTasks.clear();
+    listCheckBox.clear();
     for (var task in tasks) {
-      showTasks.add(task);
+      listCheckBox.add(CheckboxListTile(
+        title: Text(task['descricao'].toString()),
+        secondary: Icon(Icons.delete),
+        controlAffinity: ListTileControlAffinity.leading,
+        value: task["status"] == "T",
+        selectedTileColor: Colors.amberAccent,
+        onChanged: (bool? newStatus) {
+          _excluirTask(task['id'] as int);
+          //_atualizarTask(task['id'] as int, newStatus as bool ? "T" : "F");
+          _listarTasks().then((dynamic f) {
+            setState(() {});
+          });
+        },
+      ));
     }
   }
 
@@ -82,42 +88,42 @@ class _HomeState extends State<Home> {
         await bd.update("tasks", dadosTask, where: "id = ?", whereArgs: [id]);
   }
 
-  _incrementTask() {
-    setState(() {
-      _salvar("Salvando Tudo, mas salva pelo increment");
-      //_listarTasks();
-    });
-  }
+  Future openDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text("Digite a sua tarefa"),
+            content: TextField(
+              decoration: InputDecoration(hintText: "Nova Tarefa"),
+              controller: myControllerDialog,
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    _salvar(myControllerDialog.text);
+                    myControllerDialog.text = "";
+                    Navigator.of(context).pop();
+                    _listarTasks().then((dynamic f) {
+                      setState(() {});
+                    });
+                  },
+                  child: Text("Salvar"))
+            ],
+          ));
 
   @override
-  Widget build(BuildContext context) {
+  StatefulWidget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Lista de Tarefas")),
       ),
       body: ListView.builder(
-        itemCount: showTasks.length,
+        itemCount: listCheckBox.length,
         itemBuilder: (context, index) {
-          _listarTasks();
-          return CheckboxListTile(
-            title: Text(showTasks[index]['descricao'].toString()),
-            secondary: Icon(Icons.time_to_leave),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: checkboxStatus,
-            selectedTileColor: Colors.amberAccent,
-            onChanged: (bool? newStatus) {
-              checkboxStatus = newStatus as bool;
-              _atualizarTask(
-                  showTasks[index]['id'] as int, newStatus ? "T" : "F");
-              if (newStatus) {
-                _excluirTask(showTasks[index]['id'] as int);
-              }
-            },
-          );
+          return listCheckBox[index];
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: createAlertDialog(context),
+        onPressed: () => openDialog(context),
         tooltip: 'Crie sua nova tarefa aqui',
         child: const Icon(Icons.add),
       ),
